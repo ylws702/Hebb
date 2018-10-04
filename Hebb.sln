@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2041
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Hebb", "Hebb\Hebb.vcxproj", "{7B25E746-E4B4-4E27-B0D4-A4A6A5F65EB7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7B25E746-E4B4-4E27-B0D4-A4A6A5F65EB7}.Debug|x64.ActiveCfg = Debug|x64
+		{7B25E746-E4B4-4E27-B0D4-A4A6A5F65EB7}.Debug|x64.Build.0 = Debug|x64
+		{7B25E746-E4B4-4E27-B0D4-A4A6A5F65EB7}.Debug|x86.ActiveCfg = Debug|Win32
+		{7B25E746-E4B4-4E27-B0D4-A4A6A5F65EB7}.Debug|x86.Build.0 = Debug|Win32
+		{7B25E746-E4B4-4E27-B0D4-A4A6A5F65EB7}.Release|x64.ActiveCfg = Release|x64
+		{7B25E746-E4B4-4E27-B0D4-A4A6A5F65EB7}.Release|x64.Build.0 = Release|x64
+		{7B25E746-E4B4-4E27-B0D4-A4A6A5F65EB7}.Release|x86.ActiveCfg = Release|Win32
+		{7B25E746-E4B4-4E27-B0D4-A4A6A5F65EB7}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C27DB595-3D41-4702-B964-C70737AE5F66}
+	EndGlobalSection
+EndGlobal
