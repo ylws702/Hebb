@@ -19,11 +19,12 @@ Node::~Node()
 }
 
 
-void Node::Train(float* inputs, float output,float alpha)
+void Node::Train(float* inputs, float output)
 {
     for (unsigned i = 0; i < this->connectionCount; i++)
     {
-        weights[i] += alpha * inputs[i] * output;
+        //Hebb学习规则
+        weights[i] += this->alpha * inputs[i] * output;
     }
 }
 
@@ -34,5 +35,6 @@ float Node::GetOutput(float *inputs) const
     {
         sum += inputs[i] * this->weights[i];
     }
+    //激活函数
     return sum > 0.0f ? 1.0f : -1.0f;
 }

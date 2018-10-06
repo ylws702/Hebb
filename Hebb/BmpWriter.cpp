@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "BmpWriter.h"
 
-BmpWriter::BmpWriter(unsigned actualBitCount, float *bits, const BITMAPHEADER& header, char *headerRest ,unsigned headerRestCount)
+BmpWriter::BmpWriter(float *bits, unsigned actualBitCount, const BITMAPHEADER& header, char *headerRest, unsigned headerRestCount)
 {
     this->header = header;
     this->headerRestCount = headerRestCount;
@@ -10,7 +10,7 @@ BmpWriter::BmpWriter(unsigned actualBitCount, float *bits, const BITMAPHEADER& h
     unsigned size = this->header.fileHeader.bfSize;
     unsigned offset = this->header.fileHeader.bfOffBits;
     this->byteCount = size - offset;
-    if (actualBitCount >this->byteCount*8)
+    if (actualBitCount > this->byteCount * 8)
     {
         throw std::exception("Too many bits.");
     }
@@ -26,7 +26,7 @@ BmpWriter::BmpWriter(unsigned actualBitCount, float *bits, const BITMAPHEADER& h
     unsigned bitCount = rowBitCount * (int)header.infoHeader.biHeight;
     for (unsigned i = 0; i < bitCount; i++)
     {
-        if (i%rowBitCount==actualRowBitCount)
+        if (i%rowBitCount == actualRowBitCount)
         {
             //不小于i的最小rowBits的倍数再-1
             i = (i + rowBitCount - 1) / rowBitCount * rowBitCount - 1;
@@ -47,7 +47,7 @@ void BmpWriter::Write(const char * bmpPath) const
     std::ofstream ofs(bmpPath, std::ofstream::binary);
     if (ofs.fail())
     {
-        return;
+        throw std::exception("open file failed.");
     }
     ofs.write((char*)&this->header, sizeof(this->header));
     ofs.write(this->headerRest, this->headerRestCount);

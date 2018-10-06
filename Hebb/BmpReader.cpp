@@ -7,12 +7,7 @@ BmpReader::BmpReader(const char *bmppath)
     std::ifstream ifs(bmppath, std::ifstream::binary);
     if (ifs.fail())
     {
-        this->byteCount = 1;
-        this->actualBitCount = 1;
-        this->bitContent = new char[1];
-        this->headerRestCount = 1;
-        this->headerRest = new char[1];
-        return;
+        throw std::exception("open file failed.");
     }
     ifs.read((char*)&this->header, sizeof(this->header));
     unsigned size = this->header.fileHeader.bfSize;
@@ -21,7 +16,7 @@ BmpReader::BmpReader(const char *bmppath)
     this->headerRestCount = offset - sizeof(this->header);
     this->headerRest = new char[this->headerRestCount];
     ifs.read(this->headerRest, this->headerRestCount);
-
+    //对齐4字节后图像数据的字节数
     this->byteCount = size - offset;
     char* byteContent = new char[this->byteCount];
     ifs.read(byteContent, this->byteCount);

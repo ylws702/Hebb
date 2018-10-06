@@ -1,4 +1,5 @@
 #pragma once
+//字(2字节)
 struct WORD
 {
     unsigned char bytes[2];
@@ -14,6 +15,7 @@ struct WORD
         return (bytes[1] << 8) ^ bytes[0];
     }
 };
+//双字(4字节)
 struct DWORD
 {
     unsigned char bytes[4];
@@ -33,6 +35,7 @@ struct DWORD
         return (((((bytes[3] << 8) ^ bytes[2]) << 8) ^ bytes[1]) << 8) ^ bytes[0];
     }
 };
+//长整型(4字节)
 struct LONG
 {
     unsigned char bytes[4];

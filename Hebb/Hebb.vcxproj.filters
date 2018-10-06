@@ -64,13 +64,7 @@
     <Image Include="2.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="t1.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="t2.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="t3.bmp">
+    <Image Include="test1.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

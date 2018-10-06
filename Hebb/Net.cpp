@@ -17,16 +17,18 @@ Net::Net(unsigned nodeCount, float alpha)
     }
 }
 
-void Net::Train(float *inputs, float *outputs, float alpha)
+void Net::Train(float *inputs, float *outputs)
 {
+    //依次训练每个节点
     for (unsigned i = 0; i < this->nodeCount; i++)
     {
-        this->nodes[i]->Train(inputs, outputs[i], alpha);
+        this->nodes[i]->Train(inputs, outputs[i]);
     }
 }
 
 void Net::GetOutputs(float *inputs, float *outputs) const
 {
+    //获取每个节点的输出
     for (unsigned i = 0; i < this->nodeCount; i++)
     {
         outputs[i] = this->nodes[i]->GetOutput(inputs);
