@@ -18,6 +18,21 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BmpReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Net.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BmpWriter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BitmapHeader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -26,5 +41,37 @@
     <ClCompile Include="Hebb.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BmpReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Net.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BmpWriter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="3.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="t1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="t2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="t3.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
