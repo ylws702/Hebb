@@ -21,42 +21,18 @@ Node::~Node()
 
 void Node::Train(double* inputs, double output)
 {
-    double squareNorm = 0.0;
     for (unsigned i = 0; i < this->connectionCount; i++)
     {
-        weights[i] += alpha*inputs[i]*output;
-        squareNorm += weights[i] * weights[i];
-    }
-    squareNorm = std::sqrt(squareNorm);
-    if (squareNorm == 0.0)
-    {
-        return;
-    }
-    for (unsigned i = 0; i < this->connectionCount; i++)
-    {
-        weights[i] /= squareNorm;
+        weights[i] += alpha * inputs[i] * output;
     }
 }
 
 double Node::GetOutput(double *inputs) const
 {
-    double sum = 0;
+    double sum = 0.0;
     for (unsigned i = 0; i < this->connectionCount; i++)
     {
         sum += inputs[i] * this->weights[i];
     }
-    return sum ;
-}
-
-int Node::F(double alpha) const
-{
-    if (alpha > 0)
-    {
-        return 1;
-    }
-    if (alpha < 0)
-    {
-        return -1;
-    }
-    return 0;
+    return sum > 0.0 ? 1.0 : -1.0;
 }

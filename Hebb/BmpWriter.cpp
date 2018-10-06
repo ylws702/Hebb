@@ -1,43 +1,34 @@
 #include "pch.h"
 #include "BmpWriter.h"
 
-BmpWriter::BmpWriter(unsigned count, double *blocks, const BITMAPHEADER& header)
+BmpWriter::BmpWriter(unsigned bitCount, double *bits, const BITMAPHEADER& header, char *headerRest ,unsigned headerRestCount)
 {
     this->header = header;
+    this->headerRestCount = headerRestCount;
+    this->headerRest = new char[this->headerRestCount];
+    std::memcpy(this->headerRest, headerRest, this->headerRestCount);
     unsigned size = this->header.fileHeader.bfSize;
     unsigned offset = this->header.fileHeader.bfOffBits;
-    this->length = size - offset;
-    this->content = new char[this->length];
-    if (count * 4 > this->length)
+    this->byteCount = size - offset;
+    this->byteContent = new char[this->byteCount];
+    for (unsigned i = 0; i < this->byteCount; i++)
     {
-        count = this->length / 4;
-    }
-    double value;
-    unsigned char *bytes;
-    int n;
-    for (unsigned i = 0; i < count; i++)
-    {
-        value = blocks[i] * 0xFFFFFFFFU;
-        bytes = (unsigned char*)(this->content + 4 * i);
-        if (value >= 0xFFFFFFFFU)
+        unsigned char byte = 0;
+        int startBit = i << 3;
+        for (unsigned j = 7; j > 0; j--)
         {
-            bytes[0] = bytes[1] = bytes[2] = bytes[3] = 0xFFU;
-            continue;
+            byte ^= (bits[startBit + j] > 0.0 ? 1 : 0);
+            byte <<= 1;
         }
-        n = (int)value;
-        bytes[0] = n % 0x100;
-        n >>= 8;
-        bytes[1] = n % 0x100;
-        n >>= 8;
-        bytes[2] = n % 0x100;
-        n >>= 8;
-        bytes[3] = n % 0x100;
+        byte ^= (bits[startBit] > 0.0 ? 1 : 0);
+        this->byteContent[i] = byte;
     }
 }
 
 BmpWriter::~BmpWriter()
 {
-    delete[] this->content;
+    delete[] this->byteContent;
+    delete[] this->headerRest;
 }
 
 void BmpWriter::Write(const char * bmpPath) const
@@ -48,8 +39,7 @@ void BmpWriter::Write(const char * bmpPath) const
         return;
     }
     ofs.write((char*)&this->header, sizeof(this->header));
-    unsigned offset = this->header.fileHeader.bfOffBits;
-    ofs.seekp(offset, std::ofstream::beg);
-    ofs.write(this->content, this->length);
+    ofs.write(this->headerRest, this->headerRestCount);
+    ofs.write(this->byteContent, this->byteCount);
     ofs.close();
 }
