@@ -7,7 +7,7 @@ Net::Net() :nodeCount(1)
     this->nodes[0] = new Node(nodeCount, 1);
 }
 
-Net::Net(unsigned nodeCount, double alpha)
+Net::Net(unsigned nodeCount, float alpha)
     :nodeCount(nodeCount)
 {
     this->nodes = new Node*[nodeCount];
@@ -17,15 +17,15 @@ Net::Net(unsigned nodeCount, double alpha)
     }
 }
 
-void Net::Train(double *inputs, double *outputs)
+void Net::Train(float *inputs, float *outputs, float alpha)
 {
     for (unsigned i = 0; i < this->nodeCount; i++)
     {
-        this->nodes[i]->Train(inputs, outputs[i]);
+        this->nodes[i]->Train(inputs, outputs[i], alpha);
     }
 }
 
-void Net::GetOutputs(double *inputs, double *outputs) const
+void Net::GetOutputs(float *inputs, float *outputs) const
 {
     for (unsigned i = 0; i < this->nodeCount; i++)
     {

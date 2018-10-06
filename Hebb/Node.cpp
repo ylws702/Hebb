@@ -2,10 +2,10 @@
 #include "Node.h"
 
 
-Node::Node(unsigned connectionCount, double alpha)
+Node::Node(unsigned connectionCount, float alpha)
     :connectionCount(connectionCount), alpha(alpha)
 {
-    this->weights = new double[connectionCount];
+    this->weights = new float[connectionCount];
     for (unsigned i = 0; i < connectionCount; i++)
     {
         this->weights[i] = 0.0;
@@ -19,7 +19,7 @@ Node::~Node()
 }
 
 
-void Node::Train(double* inputs, double output)
+void Node::Train(float* inputs, float output,float alpha)
 {
     for (unsigned i = 0; i < this->connectionCount; i++)
     {
@@ -27,12 +27,12 @@ void Node::Train(double* inputs, double output)
     }
 }
 
-double Node::GetOutput(double *inputs) const
+float Node::GetOutput(float *inputs) const
 {
-    double sum = 0.0;
+    float sum = 0.0f;
     for (unsigned i = 0; i < this->connectionCount; i++)
     {
         sum += inputs[i] * this->weights[i];
     }
-    return sum > 0.0 ? 1.0 : -1.0;
+    return sum > 0.0f ? 1.0f : -1.0f;
 }

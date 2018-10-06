@@ -3,13 +3,13 @@
 class Node
 {
 public:
-    Node(unsigned connectionCount, double alpha);
+    Node(unsigned connectionCount, float alpha);
     ~Node();
-    void Train(double* inputs, double output);
-    double GetOutput(double *inputs)const;
+    void Train(float* inputs, float output, float alpha);
+    float GetOutput(float *inputs)const;
 private:
-    double *weights;
+    float *weights;
     unsigned connectionCount;
-    double alpha;
+    float alpha;
 };
 

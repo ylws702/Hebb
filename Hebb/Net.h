@@ -4,9 +4,9 @@ class Net
 {
 public:
     Net();
-    Net(unsigned nodeCount,double alpha);
-    void Train(double *inputs, double *outputs);
-    void GetOutputs(double *inputs,double *outputs)const;
+    Net(unsigned nodeCount,float alpha);
+    void Train(float *inputs, float *outputs,float alpha);
+    void GetOutputs(float *inputs,float *outputs)const;
     ~Net();
 private:
     unsigned nodeCount;

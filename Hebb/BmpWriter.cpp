@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "BmpWriter.h"
 
-BmpWriter::BmpWriter(unsigned bitCount, double *bits, const BITMAPHEADER& header, char *headerRest ,unsigned headerRestCount)
+BmpWriter::BmpWriter(unsigned actualBitCount, float *bits, const BITMAPHEADER& header, char *headerRest ,unsigned headerRestCount)
 {
     this->header = header;
     this->headerRestCount = headerRestCount;
@@ -10,18 +10,29 @@ BmpWriter::BmpWriter(unsigned bitCount, double *bits, const BITMAPHEADER& header
     unsigned size = this->header.fileHeader.bfSize;
     unsigned offset = this->header.fileHeader.bfOffBits;
     this->byteCount = size - offset;
-    this->byteContent = new char[this->byteCount];
-    for (unsigned i = 0; i < this->byteCount; i++)
+    if (actualBitCount >this->byteCount*8)
     {
-        unsigned char byte = 0;
-        int startBit = i << 3;
-        for (unsigned j = 7; j > 0; j--)
+        throw std::exception("Too many bits.");
+    }
+    this->byteContent = new char[this->byteCount];
+    std::memset(this->byteContent, 0, this->byteCount);
+    //每行实际存储图像数据的比特数
+    unsigned actualRowBitCount = (int)header.infoHeader.biWidth*(unsigned)header.infoHeader.biBitCount;
+    //填0对齐4字节后每行图像数据的比特数
+    unsigned rowBitCount = (actualRowBitCount + 31) >> 5 << 5;
+    //写入计数变量
+    unsigned readCount = 0;
+    //填0对齐4字节后图像数据的比特数
+    unsigned bitCount = rowBitCount * (int)header.infoHeader.biHeight;
+    for (unsigned i = 0; i < bitCount; i++)
+    {
+        if (i%rowBitCount==actualRowBitCount)
         {
-            byte ^= (bits[startBit + j] > 0.0 ? 1 : 0);
-            byte <<= 1;
+            //不小于i的最小rowBits的倍数再-1
+            i = (i + rowBitCount - 1) / rowBitCount * rowBitCount - 1;
+            continue;
         }
-        byte ^= (bits[startBit] > 0.0 ? 1 : 0);
-        this->byteContent[i] = byte;
+        this->byteContent[i >> 3] ^= (bits[readCount++] > 0.0f ? 1 : 0) << (7 - i % 8);
     }
 }
 

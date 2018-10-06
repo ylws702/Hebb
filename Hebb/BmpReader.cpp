@@ -8,7 +8,7 @@ BmpReader::BmpReader(const char *bmppath)
     if (ifs.fail())
     {
         this->byteCount = 1;
-        this->bitCount = 1;
+        this->actualBitCount = 1;
         this->bitContent = new char[1];
         this->headerRestCount = 1;
         this->headerRest = new char[1];
@@ -23,22 +23,31 @@ BmpReader::BmpReader(const char *bmppath)
     ifs.read(this->headerRest, this->headerRestCount);
 
     this->byteCount = size - offset;
-    this->bitCount = this->byteCount * 8;
     char* byteContent = new char[this->byteCount];
     ifs.read(byteContent, this->byteCount);
     ifs.close();
-    this->bitContent = new char[this->bitCount];
-    for (unsigned i = 0; i < this->bitCount; i++)
+    //每行实际未对齐存储图像数据的比特数
+    unsigned actualRowBitCount = (int)header.infoHeader.biWidth*(unsigned)header.infoHeader.biBitCount;
+    //对齐4字节后每行图像数据的比特数
+    unsigned rowBitCount = (actualRowBitCount + 31) >> 5 << 5;
+    //对齐4字节后图像数据的比特数
+    unsigned bitCount = (int)header.infoHeader.biHeight*rowBitCount;
+    //读取计数变量
+    unsigned readCount = 0;
+    //实际未对齐存储图像数据的比特数
+    this->actualBitCount = actualRowBitCount * (int)header.infoHeader.biHeight;
+    //获取空间
+    this->bitContent = new char[this->actualBitCount];
+    for (unsigned i = 0; i < bitCount; i++)
     {
-        unsigned char byte = byteContent[i >> 3];
-        this->bitContent[i++] = byte & 1;
-        this->bitContent[i++] = (byte >> 1) & 1;
-        this->bitContent[i++] = (byte >> 1) & 1;
-        this->bitContent[i++] = (byte >> 1) & 1;
-        this->bitContent[i++] = (byte >> 1) & 1;
-        this->bitContent[i++] = (byte >> 1) & 1;
-        this->bitContent[i++] = (byte >> 1) & 1;
-        this->bitContent[i] = (byte >> 1) & 1;
+        //跳过填充
+        if (i%rowBitCount >= actualRowBitCount)
+        {
+            //不小于i的最小rowBits的倍数再-1
+            i = (i + rowBitCount - 1) / rowBitCount * rowBitCount - 1;
+            continue;
+        }
+        this->bitContent[readCount++] = byteContent[i >> 3] >> (7 - i % 8) & 1;
     }
     delete[] byteContent;
 }
@@ -50,9 +59,9 @@ BmpReader::~BmpReader()
     delete[] this->headerRest;
 }
 
-double BmpReader::Get(int i)const
+float BmpReader::Get(int i)const
 {
-    return this->bitContent[i] == 1 ? 1.0 : -1.0;
+    return this->bitContent[i] == 1 ? 1.0f : -1.0f;
 }
 
 BITMAPHEADER BmpReader::GetHeader() const
