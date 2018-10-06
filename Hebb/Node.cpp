@@ -8,7 +8,7 @@ Node::Node(unsigned connectionCount, double alpha)
     this->weights = new double[connectionCount];
     for (unsigned i = 0; i < connectionCount; i++)
     {
-        this->weights[i] = 1/connectionCount;
+        this->weights[i] = 0.0;
     }
 }
 
@@ -21,16 +21,20 @@ Node::~Node()
 
 void Node::Train(double* inputs, double output)
 {
-    double net = 0.0;
+    double squareNorm = 0.0;
     for (unsigned i = 0; i < this->connectionCount; i++)
     {
-        net += weights[i] * inputs[i];
+        weights[i] += alpha*inputs[i]*output;
+        squareNorm += weights[i] * weights[i];
     }
-    net *= alpha;
-    double delta = alpha * this->F(net);
+    squareNorm = std::sqrt(squareNorm);
+    if (squareNorm == 0.0)
+    {
+        return;
+    }
     for (unsigned i = 0; i < this->connectionCount; i++)
     {
-        weights[i] += delta * inputs[i];
+        weights[i] /= squareNorm;
     }
 }
 
@@ -41,7 +45,7 @@ double Node::GetOutput(double *inputs) const
     {
         sum += inputs[i] * this->weights[i];
     }
-    return sum / connectionCount / alpha;
+    return sum ;
 }
 
 int Node::F(double alpha) const
